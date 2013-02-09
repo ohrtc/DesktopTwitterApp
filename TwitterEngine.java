@@ -3,6 +3,8 @@
  * @author Cameron Ohrt
  * 
  */
+import java.util.List;
+
 import twitter4j.*;
 
 public class TwitterEngine {
@@ -42,24 +44,42 @@ public class TwitterEngine {
 		return null;
 	}
 	
-	public QueryResult searchTweets(String query){
+	public List<Status> searchTweets(String query){
 		try {
 			Query toSearch = new Query(query);
 			QueryResult results = engine.search(toSearch);
-			return results;
+			return results.getTweets();
 		} catch (TwitterException ex) {
 			System.out.println("Search failed.");
 		}
 		return null;
 	}
 	
-	public void newmethod(){
+	public User followUser(String screenName){
+		try{			
+		return engine.createFriendship(screenName);
+		} catch (TwitterException ex){
+			System.out.println("Follow unsuccessful.");
+		}
+		return null;
+	}
+	
+	public User followUser(long ID){
+		try{			
+		return engine.createFriendship(ID);
+		} catch (TwitterException ex){
+			System.out.println("Follow unsuccessful.");
+		}
+		return null;
 	}
 	
 	
 
 	public static void main(String[] args) {
 		TwitterEngine test = new TwitterEngine();
-		test.updateStatus("Hello, test.");
+		List TList = test.searchTweets("hockey");
+		for(int i = 0; i < TList.size(); i++)
+			System.out.println(TList.get(i));
+		
 	}
 }
